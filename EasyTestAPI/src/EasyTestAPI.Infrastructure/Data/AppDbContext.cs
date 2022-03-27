@@ -19,9 +19,6 @@ public class AppDbContext : DbContext
     _mediator = mediator;
   }
 
-  public DbSet<ToDoItem> ToDoItems => Set<ToDoItem>();
-  public DbSet<Project> Projects => Set<Project>();
-
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     base.OnModelCreating(modelBuilder);

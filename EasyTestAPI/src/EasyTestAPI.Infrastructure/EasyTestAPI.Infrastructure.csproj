@@ -12,9 +12,10 @@
     <PackageReference Include="Autofac" Version="6.3.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
     <PackageReference Include="Ardalis.EFCore.Extensions" Version="1.1.0" />
+    <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" PrivateAssets="all" Version="6.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
+    <PackageReference Include="Npgsql" Version="6.0.3" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.3" />
     <PackageReference Include="SQLite" Version="3.13.0" />
     <PackageReference Include="NETStandard.Library" Version="2.0.3" />
   </ItemGroup>
@@ -22,5 +23,9 @@
   <ItemGroup>
     <ProjectReference Include="..\EasyTestAPI.Core\EasyTestAPI.Core.csproj" />
     <ProjectReference Include="..\EasyTestAPI.SharedKernel\EasyTestAPI.SharedKernel.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Data\Config\" />
   </ItemGroup>
 </Project>
