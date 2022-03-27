@@ -28,4 +28,8 @@
     <ProjectReference Include="..\EasyTestAPI.UnitTests\EasyTestAPI.UnitTests.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ApiEndpoints\" />
+  </ItemGroup>
+
 </Project>

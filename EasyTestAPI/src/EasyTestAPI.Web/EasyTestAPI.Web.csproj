@@ -8,6 +8,7 @@
     <WebProjectMode>true</WebProjectMode>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>f3166f3b-1b39-414c-8948-90205d4cd8c6</UserSecretsId>
   </PropertyGroup>
   
   <ItemGroup>
@@ -27,6 +28,11 @@
   
   <ItemGroup>
     <ProjectReference Include="..\EasyTestAPI.Infrastructure\EasyTestAPI.Infrastructure.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="ApiModels\" />
+    <Folder Include="Endpoints\" />
   </ItemGroup>
   
 </Project>
