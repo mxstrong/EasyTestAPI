@@ -1,6 +1,6 @@
 ﻿using Autofac;
+using EasyTestAPI.Core.Entities;
 using EasyTestAPI.Core.Interfaces;
-using EasyTestAPI.Core.ProjectAggregate;
 using EasyTestAPI.Infrastructure.Data;
 using EasyTestAPI.SharedKernel.Interfaces;
 using MediatR;
@@ -17,7 +17,7 @@ public class DefaultInfrastructureModule : Module
   public DefaultInfrastructureModule(bool isDevelopment, Assembly? callingAssembly = null)
   {
     _isDevelopment = isDevelopment;
-    var coreAssembly = Assembly.GetAssembly(typeof(Project)); // TODO: Replace "Project" with any type from your Core project
+    var coreAssembly = Assembly.GetAssembly(typeof(User)); // TODO: Replace "Project" with any type from your Core project
     var infrastructureAssembly = Assembly.GetAssembly(typeof(StartupSetup));
     if (coreAssembly != null)
     {

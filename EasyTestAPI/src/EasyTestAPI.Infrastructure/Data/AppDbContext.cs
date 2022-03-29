@@ -1,5 +1,5 @@
 ﻿using Ardalis.EFCore.Extensions;
-using EasyTestAPI.Core.ProjectAggregate;
+using EasyTestAPI.Core.Entities;
 using EasyTestAPI.SharedKernel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +18,9 @@ public class AppDbContext : DbContext
   {
     _mediator = mediator;
   }
+
+  public DbSet<User> Users => Set<User>();
+  public DbSet<Role> Roles => Set<Role>();
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
