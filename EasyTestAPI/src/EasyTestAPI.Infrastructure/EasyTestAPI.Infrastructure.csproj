@@ -5,15 +5,17 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>c2183589-4f74-4287-89d5-5f1a6bedab9a</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="5.2.0" />
+    <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="6.0.1" />
     <PackageReference Include="Autofac" Version="6.3.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
     <PackageReference Include="Ardalis.EFCore.Extensions" Version="1.1.0" />
     <PackageReference Include="Dapper" Version="2.0.123" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" PrivateAssets="all" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" PrivateAssets="all" Version="6.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
     <PackageReference Include="Npgsql" Version="6.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.3" />
     <PackageReference Include="SQLite" Version="3.13.0" />
@@ -23,9 +25,5 @@
   <ItemGroup>
     <ProjectReference Include="..\EasyTestAPI.Core\EasyTestAPI.Core.csproj" />
     <ProjectReference Include="..\EasyTestAPI.SharedKernel\EasyTestAPI.SharedKernel.csproj" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="Data\Config\" />
   </ItemGroup>
 </Project>
