@@ -1,10 +1,7 @@
 ﻿using EasyTestAPI.Infrastructure.Data;
-using EasyTestAPI.UnitTests;
-using EasyTestAPI.Web;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -39,17 +36,6 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
 
       // Ensure the database is created.
       db.Database.EnsureCreated();
-
-      try
-      {
-        // Seed the database with test data.
-        SeedData.PopulateTestData(db);
-      }
-      catch (Exception ex)
-      {
-        logger.LogError(ex, "An error occurred seeding the " +
-                            $"database with test messages. Error: {ex.Message}");
-      }
     }
 
     host.Start();
@@ -79,8 +65,6 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
       {
         options.UseInMemoryDatabase(inMemoryCollectionName);
       });
-
-          services.AddScoped<IMediator, NoOpMediator>();
         });
   }
 }
