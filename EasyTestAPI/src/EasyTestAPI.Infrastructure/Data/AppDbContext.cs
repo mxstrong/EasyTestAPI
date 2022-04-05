@@ -1,5 +1,6 @@
 ﻿using Ardalis.EFCore.Extensions;
 using EasyTestAPI.Core.Entities;
+using EasyTestAPI.Core.TestAggregate;
 using EasyTestAPI.SharedKernel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,12 @@ public class AppDbContext : DbContext
 
   public DbSet<User> Users => Set<User>();
   public DbSet<Role> Roles => Set<Role>();
+  public DbSet<Test> Tests => Set<Test>();
+  public DbSet<Question> Question => Set<Question>();
+  public DbSet<QuestionType> QuestionTypes => Set<QuestionType>();
+  public DbSet<Answer> Answers => Set<Answer>();
+  public DbSet<AnsweredTest> AnsweredTests => Set<AnsweredTest>();
+  public DbSet<TestAnswer> TestAnswers => Set<TestAnswer>();
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

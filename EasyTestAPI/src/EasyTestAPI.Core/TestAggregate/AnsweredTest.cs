@@ -9,4 +9,5 @@ public class AnsweredTest : BaseEntity
   public Test Test { get; set; }
   public string? UserId { get; set; }
   public User? User { get; set; }
+  public List<TestAnswer> TestAnswers { get; set; }
 }
