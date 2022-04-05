@@ -1,5 +1,4 @@
-﻿using EasyTestAPI.Core.Entities;
-using EasyTestAPI.Core.TestAggregate;
+﻿using EasyTestAPI.Core.TestAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

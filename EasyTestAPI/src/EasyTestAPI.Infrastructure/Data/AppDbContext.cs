@@ -1,4 +1,5 @@
-﻿using Ardalis.EFCore.Extensions;
+﻿using System.Data;
+using Ardalis.EFCore.Extensions;
 using EasyTestAPI.Core.Entities;
 using EasyTestAPI.Core.TestAggregate;
 using EasyTestAPI.SharedKernel;
@@ -19,6 +20,7 @@ public class AppDbContext : DbContext
   {
     _mediator = mediator;
   }
+  public IDbConnection Connection => Database.GetDbConnection();
 
   public DbSet<User> Users => Set<User>();
   public DbSet<Role> Roles => Set<Role>();

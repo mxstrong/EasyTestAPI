@@ -1,5 +1,4 @@
-﻿using EasyTestAPI.Core.Entities;
-using EasyTestAPI.Infrastructure.Data;
+﻿using EasyTestAPI.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
