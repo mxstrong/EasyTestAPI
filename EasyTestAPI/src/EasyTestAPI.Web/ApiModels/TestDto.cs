@@ -12,13 +12,14 @@ public class TestDto
 
   public static TestDto FromTest(Test test)
   {
+    
     return new TestDto()
     {
       TestId = test.TestId,
       Name = test.Name,
       Description = test.Description,
       Code = test.Code,
-      Questions = test.Questions.Select(q => QuestionDto.FromQuestion(q)).ToList()
+      Questions = test.Questions.Count > 0 ? test.Questions.Select(q => QuestionDto.FromQuestion(q)).ToList() : new List<QuestionDto>()
     };
   }
 }

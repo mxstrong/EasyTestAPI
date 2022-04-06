@@ -31,7 +31,9 @@ builder.Services.AddCors(options => options.AddPolicy(
     .AllowAnyHeader();
   }
 ));
-builder.Services.AddControllersWithViews().AddNewtonsoftJson();
+builder.Services.AddControllers().AddNewtonsoftJson(x => 
+  x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
 builder.Services.AddRazorPages();
 
 builder.Services.AddSwaggerGen(c =>

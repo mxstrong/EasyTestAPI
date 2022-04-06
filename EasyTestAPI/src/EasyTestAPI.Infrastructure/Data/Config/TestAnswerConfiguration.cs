@@ -11,7 +11,7 @@ public class TestAnswerConfiguration : IEntityTypeConfiguration<TestAnswer>
     builder.Property(t => t.AnsweredTestId).IsRequired();
     builder.Property(t => t.Answer).IsRequired();
     builder.Property(t => t.QuestionId).IsRequired();
-    builder.HasOne<AnsweredTest>(t => t.AnsweredTest).WithMany(a => a.TestAnswers);
-    builder.HasOne<Question>(t => t.Question).WithMany(q => q.TestAnswers);
+    builder.HasOne<AnsweredTest>(t => t.AnsweredTest).WithMany(a => a.TestAnswers).HasForeignKey(t => t.AnsweredTestId);
+    builder.HasOne<Question>(t => t.Question).WithMany(q => q.TestAnswers).HasForeignKey(t => t.QuestionId);
   }
 }

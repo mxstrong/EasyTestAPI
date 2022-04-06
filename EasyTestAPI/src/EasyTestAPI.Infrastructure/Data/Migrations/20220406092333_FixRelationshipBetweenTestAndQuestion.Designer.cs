@@ -3,6 +3,7 @@ using System;
 using EasyTestAPI.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EasyTestAPI.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220406092333_FixRelationshipBetweenTestAndQuestion")]
+    partial class FixRelationshipBetweenTestAndQuestion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -123,6 +125,10 @@ namespace EasyTestAPI.Infrastructure.Data.Migrations
                     b.Property<string>("QuestionId")
                         .HasColumnType("text");
 
+                    b.Property<string>("QuestionTypeId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("TestId")
                         .IsRequired()
                         .HasColumnType("text");
@@ -137,9 +143,9 @@ namespace EasyTestAPI.Infrastructure.Data.Migrations
 
                     b.HasKey("QuestionId");
 
-                    b.HasIndex("TestId");
+                    b.HasIndex("QuestionTypeId");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("TestId");
 
                     b.ToTable("Question");
                 });
@@ -252,15 +258,15 @@ namespace EasyTestAPI.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("EasyTestAPI.Core.TestAggregate.Question", b =>
                 {
-                    b.HasOne("EasyTestAPI.Core.TestAggregate.Test", "Test")
-                        .WithMany("Questions")
-                        .HasForeignKey("TestId")
+                    b.HasOne("EasyTestAPI.Core.TestAggregate.QuestionType", "QuestionType")
+                        .WithMany()
+                        .HasForeignKey("QuestionTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EasyTestAPI.Core.TestAggregate.QuestionType", "QuestionType")
+                    b.HasOne("EasyTestAPI.Core.TestAggregate.Test", "Test")
                         .WithMany("Questions")
-                        .HasForeignKey("TypeId")
+                        .HasForeignKey("TestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -309,11 +315,6 @@ namespace EasyTestAPI.Infrastructure.Data.Migrations
                     b.Navigation("Answers");
 
                     b.Navigation("TestAnswers");
-                });
-
-            modelBuilder.Entity("EasyTestAPI.Core.TestAggregate.QuestionType", b =>
-                {
-                    b.Navigation("Questions");
                 });
 
             modelBuilder.Entity("EasyTestAPI.Core.TestAggregate.Test", b =>

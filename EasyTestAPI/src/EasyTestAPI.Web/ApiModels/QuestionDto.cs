@@ -7,7 +7,7 @@ public class QuestionDto
   public string QuestionId { get; set; }
   public string Text { get; set; }
   public string QuestionType { get; set; }
-  public List<AnswerDto> Answers { get; set; }
+  public List<AnswerDto>? Answers { get; set; }
 
   public static QuestionDto FromQuestion(Question question)
   {
@@ -15,8 +15,8 @@ public class QuestionDto
     {
       QuestionId = question.QuestionId,
       Text = question.Text,
-      QuestionType = question.QuestionType.Name,
-      Answers = question.Answers.Select(a => AnswerDto.FromAnswer(a)).ToList()
+      QuestionType = question?.QuestionType?.Name ?? "open",
+      Answers = question?.Answers is not null ? question.Answers.Select(a => AnswerDto.FromAnswer(a)).ToList() : null
     };
   }
 }

@@ -10,6 +10,6 @@ public class AnswerConfiguration : IEntityTypeConfiguration<Answer>
     builder.Property(a => a.AnswerId).IsRequired();
     builder.Property(a => a.AnswerText).IsRequired();
     builder.Property(a => a.QuestionId).IsRequired();
-    builder.HasOne<Question>(a => a.Question).WithMany(q => q.Answers);
+    builder.HasOne<Question>(a => a.Question).WithMany(q => q.Answers).HasForeignKey(a => a.QuestionId);
   }
 }
