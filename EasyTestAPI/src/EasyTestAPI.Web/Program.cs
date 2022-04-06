@@ -20,8 +20,20 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 string connectionString = builder.Configuration.GetConnectionString("EasyTestDatabase");  //Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext(connectionString);
-
-builder.Services.AddControllersWithViews().AddNewtonsoftJson();
+builder.Services.AddWriteDbConnection();
+builder.Services.AddReadDbConnection();
+builder.Services.AddCors(options => options.AddPolicy(
+  "EasyTestApiCORSPolicy",
+  builder =>
+  {
+    builder.AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader();
+  }
+));
+builder.Services.AddControllers().AddNewtonsoftJson(x => 
+  x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
 builder.Services.AddRazorPages();
 
 builder.Services.AddSwaggerGen(c =>
@@ -63,6 +75,9 @@ else
   app.UseExceptionHandler("/Home/Error");
   app.UseHsts();
 }
+
+app.UseCors("EasyTestApiCORSPolicy");
+
 app.UseRouting();
 
 app.UseHttpsRedirection();
