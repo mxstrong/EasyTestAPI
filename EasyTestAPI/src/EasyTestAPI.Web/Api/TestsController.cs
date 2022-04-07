@@ -24,6 +24,17 @@ public class TestsController : BaseApiController
     var testDtos = tests.Count > 0 ? tests.Select(t => TestDto.FromTest(t)).ToList() : new List<TestDto>();
     return Ok(tests);
   }
+  [HttpGet("{code}")]
+  public async Task<ActionResult<TestDto>> GetTestByCode(string code)
+  {
+    var test = await _repository.GetBySpecAsync(new TestByCodeSpec(code));
+    if (test is null)
+    {
+      return BadRequest("No test found with specified code");
+    }
+    var testDto = TestDto.FromTest(test);
+    return Ok(testDto);
+  }
   [HttpPost]
   public async Task<ActionResult<TestDto>> AddTest([FromBody] AddTestDto test)
   {
