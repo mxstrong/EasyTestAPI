@@ -1,11 +1,15 @@
-﻿using Ardalis.ListStartupServices;
+﻿using System.Text;
+using Ardalis.ListStartupServices;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using EasyTestAPI.Core;
+using EasyTestAPI.Core.Interfaces;
+using EasyTestAPI.Core.Services;
 using EasyTestAPI.Infrastructure;
 using EasyTestAPI.Infrastructure.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +26,22 @@ string connectionString = builder.Configuration.GetConnectionString("EasyTestDat
 builder.Services.AddDbContext(connectionString);
 builder.Services.AddWriteDbConnection();
 builder.Services.AddReadDbConnection();
+
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+var key = Encoding.ASCII.GetBytes(builder.Configuration["JWTSecret"]);
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+  .AddJwtBearer(options =>
+  {
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+      ValidateIssuerSigningKey = true,
+      IssuerSigningKey = new SymmetricSecurityKey(key),
+      ValidateIssuer = false,
+      ValidateAudience = false
+    };
+  });
+
 builder.Services.AddCors(options => options.AddPolicy(
   "EasyTestApiCORSPolicy",
   builder =>
@@ -35,6 +55,8 @@ builder.Services.AddControllers().AddNewtonsoftJson(x =>
   x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 builder.Services.AddRazorPages();
+
+builder.Services.Configure<EmailConfig>(builder.Configuration.GetSection("MailSettings"));
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -88,7 +110,14 @@ app.UseCookiePolicy();
 app.UseSwagger();
 
 // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
-app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"));
+app.UseSwaggerUI(c => 
+{
+  c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+  c.RoutePrefix = String.Empty;
+});
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {

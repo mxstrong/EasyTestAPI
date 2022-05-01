@@ -361,3 +361,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/EasyTestAPI/src/EasyTestAPI.Web/appsettings.Development.json

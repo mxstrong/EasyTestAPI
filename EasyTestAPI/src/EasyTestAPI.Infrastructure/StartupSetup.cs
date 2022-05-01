@@ -1,6 +1,7 @@
 ﻿using EasyTestAPI.Infrastructure.Data;
 using EasyTestAPI.SharedKernel.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EasyTestAPI.Infrastructure;
