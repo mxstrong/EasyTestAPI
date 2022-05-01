@@ -1,7 +1,8 @@
 ﻿using EasyTestAPI.SharedKernel;
+using EasyTestAPI.SharedKernel.Interfaces;
 
 namespace EasyTestAPI.Core.Entities;
-public class User : BaseEntity
+public class User : BaseEntity, IAggregateRoot
 {
   public string UserId { get; set; }
   public string Email { get; set; }
@@ -12,5 +13,6 @@ public class User : BaseEntity
   public Role Role { get; set; }
   public bool Activated { get; set; }
   public DateTime CreatedAt { get; set; }
-  public DateTime UpdatedAt { get; set; }
+  public DateTime? UpdatedAt { get; set; }
+  public List<ActivationToken> ActivationTokens { get; set; }
 }

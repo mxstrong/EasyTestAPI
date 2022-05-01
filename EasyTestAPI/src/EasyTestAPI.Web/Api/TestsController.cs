@@ -41,6 +41,7 @@ public class TestsController : BaseApiController
     var code = Guid.NewGuid().ToString().Split('-').Take(2).Aggregate((firstPart, secondPart) => firstPart + secondPart);
     // TODO: check for duplicate codes
     var testId = Guid.NewGuid().ToString();
+    var types = await _questionTypesRepo.ListAsync();
     var testToCreate = new Test()
     {
       TestId = testId,
@@ -48,10 +49,10 @@ public class TestsController : BaseApiController
       Description = test.Description,
       Code = code,
       CreatedById = "test",
-      Questions = (await Task.WhenAll(test.Questions.Select(async question =>
+      Questions = test.Questions.Select(question =>
       {
         var questionId = Guid.NewGuid().ToString();
-        var type = await _questionTypesRepo.GetBySpecAsync(new QuestionTypeByNameSpec(question.Type));
+        var type = types.Single(type => type.Name == question.Type);
         var typeId = type!.QuestionTypeId;
         return new Question()
         {
@@ -67,7 +68,7 @@ public class TestsController : BaseApiController
           }).ToList() : null,
           TestAnswers = new List<TestAnswer>()
         };
-      }).ToList())).ToList(),
+      }).ToList().ToList(),
       AnsweredTests = new List<AnsweredTest>()
     };
     var newTest = await _repository.AddAsync(testToCreate);
