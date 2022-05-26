@@ -24,8 +24,8 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 string connectionString = builder.Configuration.GetConnectionString("EasyTestDatabase");  //Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext(connectionString);
-builder.Services.AddWriteDbConnection();
-builder.Services.AddReadDbConnection();
+/*builder.Services.AddWriteDbConnection();
+builder.Services.AddReadDbConnection();*/
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 
