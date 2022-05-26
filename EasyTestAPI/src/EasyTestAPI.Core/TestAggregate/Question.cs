@@ -1,7 +1,8 @@
 ﻿using EasyTestAPI.SharedKernel;
+using EasyTestAPI.SharedKernel.Interfaces;
 
 namespace EasyTestAPI.Core.TestAggregate;
-public class Question : BaseEntity
+public class Question : BaseEntity, IAggregateRoot
 {
   public string QuestionId { get; set; }
   public string Text { get; set; }

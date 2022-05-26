@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using EasyTestAPI.Core.Entities;
 using EasyTestAPI.Core.Entities;
 
 namespace EasyTestAPI.Core.Interfaces;

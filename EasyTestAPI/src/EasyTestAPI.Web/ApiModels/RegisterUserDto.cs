@@ -1,4 +1,4 @@
-﻿using EasyTestAPI.Core.Entities;
+using EasyTestAPI.Core.Entities;
 
 namespace EasyTestAPI.Web.ApiModels;
 

@@ -1,4 +1,4 @@
-﻿using System.Configuration;
+using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -81,10 +81,6 @@ public class AuthController : BaseApiController
   [HttpPost("register")]
   public async Task<ActionResult<UserDto>> Register([FromBody] RegisterUserDto registerDto)
   {
-    if (!ModelState.IsValid)
-    {
-      return BadRequest(ModelState);
-    }
     var existingUser = await _repository.GetBySpecAsync(new UserByEmailSpec(registerDto.Email));
     if (existingUser is not null)
     {

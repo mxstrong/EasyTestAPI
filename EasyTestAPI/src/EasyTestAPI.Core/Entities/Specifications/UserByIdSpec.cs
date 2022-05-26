@@ -1,4 +1,4 @@
-﻿using Ardalis.Specification;
+using Ardalis.Specification;
 using EasyTestAPI.Core.Entities;
 
 namespace EasyTestAPI.Core.Entities.Specifications;

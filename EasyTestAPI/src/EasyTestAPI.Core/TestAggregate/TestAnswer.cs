@@ -7,6 +7,7 @@ public class TestAnswer : BaseEntity
   public string AnsweredTestId { get; set; }
   public AnsweredTest AnsweredTest { get; set; }
   public string Answer { get; set; }
+  public bool? IsCorrect { get; set; }
   public string QuestionId { get; set; }
   public Question Question { get; set; }
 }

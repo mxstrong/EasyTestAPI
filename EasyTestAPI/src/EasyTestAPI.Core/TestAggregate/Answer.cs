@@ -6,5 +6,6 @@ public class Answer : BaseEntity
   public string AnswerId { get; set; }
   public string AnswerText { get; set; }
   public string QuestionId { get; set; }
+  public bool IsCorrect { get; set; }
   public Question Question { get; set; }
 }

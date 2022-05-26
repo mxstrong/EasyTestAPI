@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace EasyTestAPI.Infrastructure.Data.Migrations
 {
-    public partial class AddActivationTokens : Migration
+  public partial class AddActivationTokens : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
