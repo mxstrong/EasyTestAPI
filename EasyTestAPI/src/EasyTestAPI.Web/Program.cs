@@ -94,7 +94,9 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-  app.UseExceptionHandler("/Home/Error");
+  app.UseDeveloperExceptionPage();
+  app.UseShowAllServicesMiddleware();
+  //app.UseExceptionHandler("/Home/Error");
   app.UseHsts();
 }
 
