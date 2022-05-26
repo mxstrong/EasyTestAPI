@@ -1,5 +1,7 @@
 ﻿using EasyTestAPI.Infrastructure.Data;
+using EasyTestAPI.SharedKernel.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EasyTestAPI.Infrastructure;
@@ -7,5 +9,9 @@ public static class StartupSetup
 {
   public static void AddDbContext(this IServiceCollection services, string connectionString) =>
       services.AddDbContext<AppDbContext>(options =>
-          options.UseSqlite(connectionString)); // will be created in web project root
+          options.UseNpgsql(connectionString)); // will be created in web project root
+  public static void AddWriteDbConnection(this IServiceCollection services) =>
+    services.AddScoped<IApplicationWriteDbConnection, ApplicationWriteDbConnection>();
+  public static void AddReadDbConnection(this IServiceCollection services) => 
+    services.AddScoped<IApplicationReadDbConnection, ApplicationReadDbConnection>();
 }

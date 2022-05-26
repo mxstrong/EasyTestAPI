@@ -1,5 +1,4 @@
-﻿using EasyTestAPI.Core.ProjectAggregate;
-using EasyTestAPI.Infrastructure.Data;
+﻿using EasyTestAPI.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,8 +34,8 @@ public abstract class BaseEfRepoTestFixture
     return builder.Options;
   }
 
-  protected EfRepository<Project> GetRepository()
+  /*protected EfRepository<Project> GetRepository()
   {
     return new EfRepository<Project>(_dbContext);
-  }
+  }*/
 }
