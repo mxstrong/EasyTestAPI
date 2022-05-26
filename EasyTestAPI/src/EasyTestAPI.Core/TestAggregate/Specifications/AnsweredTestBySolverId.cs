@@ -5,6 +5,6 @@ public class AnsweredTestBySolverIdSpec: Specification<AnsweredTest>
 {
   public AnsweredTestBySolverIdSpec(string? userId)
   {
-    Query.Where(at => at.UserId == userId);
+    Query.Where(at => at.UserId == userId).Include(at => at.Test);
   }
 }
