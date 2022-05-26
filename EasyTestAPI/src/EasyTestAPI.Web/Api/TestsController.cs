@@ -137,27 +137,27 @@ public class TestsController : BaseApiController
     var solvedTests = await _answeredTestsRepo.ListAsync(new AnsweredTestBySolverIdSpec(userId));
     var userTests = new UserTestsDto()
     {
-      CreatedTests = createdTests.Select(test => new TestWithSolutionDto()
+      CreatedTests = createdTests is not null ? createdTests.Select(test => new TestWithSolutionDto()
       {
         TestId = test.TestId,
         Code = test.Code,
         Description = test.Description,
         Name = test.Name,
-        Questions = test.Questions.Select(question => QuestionDto.FromQuestion(question)).ToList(),
-        Solutions = test.AnsweredTests.Select(answer => new TestSolutionDto()
+        Questions = test.Questions is not null ? test.Questions.Select(question => QuestionDto.FromQuestion(question)).ToList() : new List<QuestionDto>(),
+        Solutions = test.AnsweredTests is not null ? test.AnsweredTests.Select(answer => new TestSolutionDto()
         {
           AnsweredTestId = answer.AnsweredTestId,
-          Solver = answer.User is not null ? UserDto.FromUser(answer.User) : null,
+          Solver = UserDto.FromUser(answer.User),
           SolvedAt = answer.SolvedAt.ToString()
-        }).ToList()
-      }).ToList(),
-      SolvedTests = solvedTests.Select(test => new AnsweredTestDto()
+        }).ToList() : new List<TestSolutionDto>()
+      }).ToList() : new List<TestWithSolutionDto>(),
+      SolvedTests = solvedTests is not null ? solvedTests.Select(test => new AnsweredTestDto()
       {
-        AnsweredTestId = test.TestId,
+        AnsweredTestId = test.AnsweredTestId,
         TestName = test.Test.Name,
         Description = test.Test.Description ?? "",
         SolvedAt = test.SolvedAt.ToString()
-      }).ToList()
+      }).ToList() : new List<AnsweredTestDto>()
     };
     return Ok(userTests);
   }
@@ -166,6 +166,10 @@ public class TestsController : BaseApiController
   public async Task<ActionResult<SolvedTestDto>> GetSolvedTest(string answeredTestId)
   {
     var solvedTest = await _answeredTestsRepo.GetBySpecAsync(new AnsweredTestFullByIdSpec(answeredTestId));
+    if (solvedTest is null)
+    {
+      return ValidationProblem("Test not found");
+    }
     var solvedTestDto = new SolvedTestDto()
     {
       AnsweredTestId = solvedTest!.AnsweredTestId,
