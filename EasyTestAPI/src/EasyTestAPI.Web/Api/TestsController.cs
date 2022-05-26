@@ -1,8 +1,10 @@
-﻿using EasyTestAPI.Core.TestAggregate;
+﻿using System.Security.Claims;
+using EasyTestAPI.Core.TestAggregate;
 using EasyTestAPI.Core.TestAggregate.Specifications;
 using EasyTestAPI.Infrastructure.Data;
 using EasyTestAPI.SharedKernel.Interfaces;
 using EasyTestAPI.Web.ApiModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace EasyTestAPI.Web.Api;
 
@@ -39,9 +41,11 @@ public class TestsController : BaseApiController
     var testDto = TestDto.FromTest(test);
     return Ok(testDto);
   }
+  [Authorize]
   [HttpPost]
   public async Task<ActionResult<TestDto>> AddTest([FromBody] AddTestDto test)
   {
+    var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
     var code = Guid.NewGuid().ToString().Split('-').Take(2).Aggregate((firstPart, secondPart) => firstPart + secondPart);
     // TODO: check for duplicate codes
     var testId = Guid.NewGuid().ToString();
@@ -52,7 +56,7 @@ public class TestsController : BaseApiController
       Name = test.Name,
       Description = test.Description,
       Code = code,
-      CreatedById = "test",
+      CreatedById = userId,
       Questions = test.Questions.Select(question =>
       {
         var questionId = Guid.NewGuid().ToString();
@@ -81,6 +85,7 @@ public class TestsController : BaseApiController
     return Ok(newTestDto);
   }
 
+  [Authorize]
   [HttpPost("answered")]
   public async Task<ActionResult<TestDto>> AnswerTest([FromBody] List<TestAnswerDto> answers)
   {
@@ -88,13 +93,14 @@ public class TestsController : BaseApiController
     {
       return ValidationProblem("No answers provided");
     }
+    var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
     var firstQuestion = await _questionsRepo.GetByIdAsync(answers[0].QuestionId);
     var testId = firstQuestion!.TestId;
     var answeredTest = new AnsweredTest()
     {
       AnsweredTestId = Guid.NewGuid().ToString(),
       TestId = testId,
-      UserId = null,
+      UserId = userId,
       SolvedAt = DateTime.UtcNow
     };
     var questions = await _questionsRepo.ListAsync(new QuestionByTestIdSpec(testId));
@@ -122,11 +128,13 @@ public class TestsController : BaseApiController
     return StatusCode(201);
   }
 
+  [Authorize]
   [HttpGet("user")]
   public async Task<ActionResult<UserTestsDto>> GetUserTests() 
   {
-    var createdTests = await _repository.ListAsync(new TestByCreatorIdSpec(null));
-    var solvedTests = await _answeredTestsRepo.ListAsync(new AnsweredTestBySolverIdSpec(null));
+    var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var createdTests = await _repository.ListAsync(new TestByCreatorIdSpec(userId));
+    var solvedTests = await _answeredTestsRepo.ListAsync(new AnsweredTestBySolverIdSpec(userId));
     var userTests = new UserTestsDto()
     {
       CreatedTests = createdTests.Select(test => new TestWithSolutionDto()
@@ -147,6 +155,7 @@ public class TestsController : BaseApiController
       {
         AnsweredTestId = test.TestId,
         TestName = test.Test.Name,
+        Description = test.Test.Description ?? "",
         SolvedAt = test.SolvedAt.ToString()
       }).ToList()
     };
