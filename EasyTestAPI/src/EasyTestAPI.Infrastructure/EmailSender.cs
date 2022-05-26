@@ -23,9 +23,26 @@ public class EmailSender : IEmailSender
       Body = body
 
 
+<<<<<<< Updated upstream
     };
     message.To.Add(new MailAddress(to));
     await emailClient.SendMailAsync(message);
     _logger.LogWarning($"Sending email to {to} from {from} with subject {subject}.");
+=======
+  static bool MySslCertificateValidationCallback(object sender, X509Certificate? certificate, X509Chain? chain, SslPolicyErrors sslPolicyErrors)
+  {
+    return true;
+  }
+
+  public async Task SendActivationEmail(User user, ActivationToken token)
+  {
+    var to = user.Email;
+    var subject = "Aktyvuokite savo EasyTest paskyrą";
+    var htmlContent = $"<html><body><h2 style=\"font-size: 36\">Sveiki, {user.DisplayName},</h2><br>" +
+        "<div style=\"font-size: 20;\">Norėdami užbaigti savo registraciją " +
+        $"<a style=\"color: blue\" href=\"http://localhost:57678/api/auth/activate/{token.ActivationTokenId}\">paspauskite čia</a><br><br>" +
+        "Jei nekūrėte Politik paskyros, ignoruokite šį laišką.</div></body></html>";
+    await SendEmailAsync(to, subject, htmlContent);
+>>>>>>> Stashed changes
   }
 }

@@ -6,6 +6,7 @@ public class AnswerDto
 {
   public string AnswerId { get; set; }
   public string Answer { get; set; }
+  public bool IsCorrect { get; set; }
 
   public static AnswerDto FromAnswer(Answer answer)
   {
@@ -13,7 +14,8 @@ public class AnswerDto
     {
 
       AnswerId = answer.AnswerId,
-      Answer = answer.AnswerText
+      Answer = answer.AnswerText,
+      IsCorrect = answer.IsCorrect
     };
   }
 }

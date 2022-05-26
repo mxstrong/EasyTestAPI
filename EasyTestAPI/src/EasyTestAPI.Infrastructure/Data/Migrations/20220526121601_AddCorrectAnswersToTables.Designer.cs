@@ -3,6 +3,7 @@ using System;
 using EasyTestAPI.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EasyTestAPI.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220526121601_AddCorrectAnswersToTables")]
+    partial class AddCorrectAnswersToTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +23,25 @@ namespace EasyTestAPI.Infrastructure.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("EasyTestAPI.Core.Entities.ActivationToken", b =>
+                {
+                    b.Property<string>("ActivationTokenId")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("ActivationTokenId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ActivationToken");
+                });
 
             modelBuilder.Entity("EasyTestAPI.Core.Entities.Role", b =>
                 {
@@ -67,7 +88,7 @@ namespace EasyTestAPI.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("UserId");
@@ -220,6 +241,17 @@ namespace EasyTestAPI.Infrastructure.Data.Migrations
                     b.ToTable("TestAnswers");
                 });
 
+            modelBuilder.Entity("EasyTestAPI.Core.Entities.ActivationToken", b =>
+                {
+                    b.HasOne("EasyTestAPI.Core.Entities.User", "User")
+                        .WithMany("ActivationTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("EasyTestAPI.Core.Entities.User", b =>
                 {
                     b.HasOne("EasyTestAPI.Core.Entities.Role", "Role")
@@ -306,6 +338,11 @@ namespace EasyTestAPI.Infrastructure.Data.Migrations
                     b.Navigation("AnsweredTest");
 
                     b.Navigation("Question");
+                });
+
+            modelBuilder.Entity("EasyTestAPI.Core.Entities.User", b =>
+                {
+                    b.Navigation("ActivationTokens");
                 });
 
             modelBuilder.Entity("EasyTestAPI.Core.TestAggregate.AnsweredTest", b =>
