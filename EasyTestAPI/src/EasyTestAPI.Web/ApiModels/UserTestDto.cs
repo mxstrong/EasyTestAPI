@@ -10,6 +10,7 @@ public class AnsweredTestDto
 {
   public string AnsweredTestId { get; set; }
   public string TestName { get; set; }
+  public string Description { get; set; }
   public string SolvedAt { get; set; }
 }
 
