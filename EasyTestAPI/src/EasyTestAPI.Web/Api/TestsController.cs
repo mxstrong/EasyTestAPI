@@ -11,9 +11,9 @@ public class TestsController : BaseApiController
   private readonly IRepository<Test> _repository;
   private readonly IReadRepository<QuestionType> _questionTypesRepo;
   private readonly IReadRepository<Question> _questionsRepo;
-  private readonly IReadRepository<AnsweredTest> _answeredTestsRepo;
+  private readonly IRepository<AnsweredTest> _answeredTestsRepo;
   private readonly AppDbContext _context;
-  public TestsController(IRepository<Test> repository, IReadRepository<QuestionType> questionTypesRepo, IReadRepository<Question> questionsRepo, IReadRepository<AnsweredTest> answeredTestsRepo, AppDbContext context)
+  public TestsController(IRepository<Test> repository, IReadRepository<QuestionType> questionTypesRepo, IReadRepository<Question> questionsRepo, IRepository<AnsweredTest> answeredTestsRepo, AppDbContext context)
   {
     _repository = repository;
     _questionTypesRepo = questionTypesRepo;
@@ -104,7 +104,8 @@ public class TestsController : BaseApiController
       bool? isCorrect = null;
       if (question!.QuestionType.Name != "open")
       {
-        isCorrect = question.Answers!.First(a => a.IsCorrect).AnswerText == answer.Answer;
+        var correctAnswer = question.Answers!.FirstOrDefault(a => a.IsCorrect);
+        isCorrect = correctAnswer is not null ? correctAnswer.AnswerText == answer.Answer : false;
       }
       return new TestAnswer()
       {
@@ -116,8 +117,8 @@ public class TestsController : BaseApiController
       };
     }).ToList();
 
-    firstQuestion.Test.AnsweredTests.Add(answeredTest);
-    await _repository.SaveChangesAsync();
+    await _answeredTestsRepo.AddAsync(answeredTest);
+    await _answeredTestsRepo.SaveChangesAsync();
     return StatusCode(201);
   }
 
